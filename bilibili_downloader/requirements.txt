@@ -1,0 +1,6 @@
+requests>=2.31.0
+pandas>=2.0.0
+openpyxl>=3.1.0  # 用于读取Excel文件
+funasr>=0.10.0  # 语音识别
+torch>=2.0.0  # FunASR依赖
+numpy>=1.20.0  # FunASR依赖 
