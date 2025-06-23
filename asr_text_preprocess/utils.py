@@ -6,6 +6,7 @@ import yaml
 from pathlib import Path
 from datetime import datetime
 from openai import OpenAI
+from typing import List
 
 def load_config(config_path="./llm_api_config.yaml"):
     """从YAML文件加载配置"""
@@ -126,6 +127,40 @@ def savejson(data, filepath, encoding='utf-8', indent=2, ensure_dir=True):
         print(f"保存JSON文件失败: {filepath}, 错误: {str(e)}")
         return False
 
+def get_all_txt_files(directory: str) -> List[str]:
+    """
+    递归获取指定目录及其子目录下的所有txt文件
+    
+    Args:
+        directory: 要搜索的目录路径
+        
+    Returns:
+        所有txt文件的绝对路径列表
+    """
+    txt_files = []
+    
+    # 使用Path对象来处理路径，更加跨平台和安全
+    base_dir = Path(directory)
+    
+    # 确保目录存在
+    if not base_dir.exists() or not base_dir.is_dir():
+        print(f"错误: 目录 '{directory}' 不存在或不是一个目录")
+        return []
+    
+    # 递归遍历所有子目录
+    for root, dirs, files in os.walk(base_dir):
+        # 筛选出所有txt文件
+        for file in files:
+            if file.lower().endswith('.txt'):
+                # 构建完整路径并添加到列表
+                full_path = Path(root) / file
+                txt_files.append(str(full_path))
+    
+    # 按照路径排序，让输出更有序
+    txt_files.sort()
+    
+    print(f"共找到 {len(txt_files)} 个txt文件")
+    return txt_files
 
 # 使用示例
 if __name__ == "__main__":
